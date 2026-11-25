@@ -228,4 +228,34 @@ class ExampleRobolectricTest {
         assertEquals("cosmos-story", parsed.sceneDrafts[0].suggestedTemplateId)
         assertEquals("minimal-text", parsed.sceneDrafts[1].suggestedTemplateId)
     }
+
+    @Test
+    fun sceneMotionJsonCodec_roundTripsAndRejectsDisallowedFields() {
+        val project = com.example.core.model.Project(
+            name = "মোশন টেস্ট",
+            script = "প্রথম লাইন বাংলায়।\nদ্বিতীয় লাইন অ্যানিমেশনসহ!",
+        )
+        val (scenes, json) = com.example.feature.editor.SceneMotionJsonCodec.generateFromSrtAndExportJson(
+            project = project,
+            varyTemplates = true,
+        )
+        assertEquals(2, scenes.size)
+
+        val allowed = setOf("minimal-text", "kinetic-type", "cosmos-story")
+        val validParsed = com.example.feature.editor.SceneMotionJsonCodec.parseAndValidateSceneJson(
+            rawJson = json,
+            allowedTemplateIds = allowed,
+            fallbackTemplateId = "minimal-text",
+        )
+        assertTrue("Valid Scene JSON should pass: ${validParsed.errors}", validParsed.isValid)
+        assertEquals(2, validParsed.scenes.size)
+
+        val badJson = """{"schemaVersion":"1.0.0","eval":"bad()","scenes":[{"headline":"Test","eval":"x"}]}"""
+        val invalidParsed = com.example.feature.editor.SceneMotionJsonCodec.parseAndValidateSceneJson(
+            rawJson = badJson,
+            allowedTemplateIds = allowed,
+        )
+        assertFalse(invalidParsed.isValid)
+        assertTrue(invalidParsed.errors.isNotEmpty())
+    }
 }

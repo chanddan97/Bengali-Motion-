@@ -36,6 +36,19 @@ enum class WatermarkPosition(val id: String, val displayLabel: String) {
     }
 }
 
+enum class SceneTransition(val id: String, val displayLabel: String) {
+    CROSSFADE("crossfade", "Crossfade"),
+    SLIDE_UP("slide-up", "Slide Up"),
+    WIPE_RIGHT("wipe-right", "Wipe Right"),
+    ZOOM_THROUGH("zoom-through", "Zoom Burst"),
+    NONE("none", "Cut");
+
+    companion object {
+        fun fromId(id: String?): SceneTransition =
+            entries.firstOrNull { it.id == id } ?: CROSSFADE
+    }
+}
+
 data class SceneItem(
     val id: String = UUID.randomUUID().toString(),
     val orderIndex: Int = 0,
@@ -47,6 +60,9 @@ data class SceneItem(
     val backgroundImagePath: String? = null,
     val accentHex: String? = null,
     val motionPreset: MotionPreset = MotionPreset.SLIDE_UP,
+    val transitionIn: SceneTransition = SceneTransition.CROSSFADE,
+    val badgeLabel: String = "",
+    val highlightWord: String = "",
     val reducedMotion: Boolean = false,
 ) {
     val durationMs: Long get() = (endMs - startMs).coerceAtLeast(500L)

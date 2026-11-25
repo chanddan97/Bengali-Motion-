@@ -100,7 +100,8 @@ fun ProjectWorkspaceScreen(
     onToggleFavoriteTemplate: (String) -> Unit,
     onImportAudioUri: (String, Uri) -> Unit,
     onUpdateAudioAsset: (String, AudioAsset?) -> Unit,
-    onAutoMatchScenes: (Project) -> Unit,
+    onAutoMatchScenes: (Project, Boolean) -> Unit,
+    onImportSceneJson: (String, String, String, (Boolean) -> Unit) -> Unit,
     onUpdateScenes: (String, List<SceneItem>) -> Unit,
     onImportImage: (String, String, Uri, (Result<String>) -> Unit) -> Unit,
     onUpdateWatermarkSettings: (String, WatermarkSettings) -> Unit,
@@ -327,8 +328,8 @@ fun ProjectWorkspaceScreen(
                                     activeStep = ProjectWorkflowStep.SRT
                                 },
                                 onAutoMatchScenes = {
-                                    onAutoMatchScenes(project)
-                                    activeStep = ProjectWorkflowStep.SCENES
+                                    onAutoMatchScenes(project, true)
+                                    activeStep = ProjectWorkflowStep.AUTO_MATCH
                                 },
                                 onUpdateAiConsent = onUpdateAiConsent,
                                 onRequestAiAssist = { onRequestAiAssist(project) },
@@ -360,18 +361,23 @@ fun ProjectWorkspaceScreen(
 
                             ProjectWorkflowStep.AUTO_MATCH -> AutoMatchStepCard(
                                 project = project,
-                                onRunAutoMatch = {
-                                    onAutoMatchScenes(project)
-                                    activeStep = ProjectWorkflowStep.SCENES
+                                allowedTemplateIds = templateCatalog.templates.map { it.id }.toSet(),
+                                onRunAutoMatch = { vary ->
+                                    onAutoMatchScenes(project, vary)
+                                },
+                                onImportSceneJson = { rawJson, onDone ->
+                                    onImportSceneJson(project.id, project.templateId, rawJson, onDone)
                                 },
                                 onGoToScenes = { activeStep = ProjectWorkflowStep.SCENES },
+                                onGoToPreview = { activeStep = ProjectWorkflowStep.PREVIEW },
+                                onShowMessage = onShowMessage,
                             )
 
                             ProjectWorkflowStep.SCENES -> ScenesStepPanel(
                                 project = project,
                                 templates = templateCatalog.templates,
                                 renderer = renderer,
-                                onAutoMatchScenes = { onAutoMatchScenes(project) },
+                                onAutoMatchScenes = { onAutoMatchScenes(project, true) },
                                 onUpdateScenes = { updated -> onUpdateScenes(project.id, updated) },
                                 onImportSceneImage = { uri, cb -> onImportImage(project.id, "scenes", uri, cb) },
                                 onShowMessage = onShowMessage,
@@ -503,12 +509,63 @@ private fun FormatAndLanguageStepCard(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun AutoMatchStepCard(
     project: Project,
-    onRunAutoMatch: () -> Unit,
+    allowedTemplateIds: Set<String>,
+    onRunAutoMatch: (Boolean) -> Unit,
+    onImportSceneJson: (String, (Boolean) -> Unit) -> Unit,
     onGoToScenes: () -> Unit,
+    onGoToPreview: () -> Unit,
+    onShowMessage: (String) -> Unit,
 ) {
+    val context = androidx.compose.ui.platform.LocalContext.current
+    var varyTemplates by remember(project.id) { mutableStateOf(true) }
+    var showJsonPasteDialog by remember { mutableStateOf(false) }
+
+    val activeJsonText = remember(project.scenes, project.templateId, project.subtitleCues, project.script, varyTemplates) {
+        if (project.scenes.isNotEmpty()) {
+            com.example.feature.editor.SceneMotionJsonCodec.exportProjectSceneJson(project)
+        } else {
+            com.example.feature.editor.SceneMotionJsonCodec.generateFromSrtAndExportJson(
+                project = project,
+                varyTemplates = varyTemplates,
+            ).second
+        }
+    }
+
+    val importJsonLauncher = androidx.activity.compose.rememberLauncherForActivityResult(
+        contract = androidx.activity.result.contract.ActivityResultContracts.OpenDocument(),
+    ) { uri ->
+        if (uri != null) {
+            runCatching {
+                context.contentResolver.openInputStream(uri)?.bufferedReader(Charsets.UTF_8)?.use { it.readText() }
+                    ?: error("Cannot read selected JSON file.")
+            }.onSuccess { text ->
+                onImportSceneJson(text) {}
+            }.onFailure { err ->
+                onShowMessage("JSON import failed: ${err.message}")
+            }
+        }
+    }
+
+    val exportJsonLauncher = androidx.activity.compose.rememberLauncherForActivityResult(
+        contract = androidx.activity.result.contract.ActivityResultContracts.CreateDocument("application/json"),
+    ) { uri ->
+        if (uri != null) {
+            runCatching {
+                context.contentResolver.openOutputStream(uri)?.use { out ->
+                    out.write(activeJsonText.toByteArray(Charsets.UTF_8))
+                } ?: error("Cannot write JSON destination.")
+            }.onSuccess {
+                onShowMessage("Exported Scene Motion JSON.")
+            }.onFailure { err ->
+                onShowMessage("JSON export failed: ${err.message}")
+            }
+        }
+    }
+
     Surface(
         shape = RoundedCornerShape(18.dp),
         color = MaterialTheme.colorScheme.surfaceVariant,
@@ -520,41 +577,164 @@ private fun AutoMatchStepCard(
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             Text(
-                text = "Auto Match → Motion (100% Offline)",
+                text = "SRT → Motion Graphics JSON (Offline Studio)",
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.primary,
             )
             Text(
-                text = "Automatically splits your project into timed motion scenes using your SRT subtitles (or Script lines if SRT is empty) and applies your active template (${project.templateId}).",
-                style = MaterialTheme.typography.bodyMedium,
+                text = "Converts your Script + SRT subtitles into a structured Motion Graphics JSON timeline with word-stagger, keyword highlights, kinetic transitions, and animated template motifs.",
+                style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Text(
-                text = "Ready inputs: ${project.subtitleCues.size} SRT cue(s) · ${project.script.lines().count { it.isNotBlank() }} script line(s) · ${project.scenes.size} existing scene(s)",
+                text = "Inputs: ${project.subtitleCues.size} SRT cue(s) · ${project.script.lines().count { it.isNotBlank() }} script line(s) · ${project.scenes.size} active scene(s)",
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurface,
             )
 
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                Button(
-                    onClick = onRunAutoMatch,
-                    modifier = Modifier
-                        .weight(1f)
-                        .minimumInteractiveComponentSize()
-                        .testTag("run_auto_match_button"),
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = "Rotate Dynamic Motion Templates",
+                        style = MaterialTheme.typography.labelLarge,
+                    )
+                    Text(
+                        text = "Applies varied templates & transitions per SRT cue instead of one static look.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+                androidx.compose.material3.Switch(
+                    checked = varyTemplates,
+                    onCheckedChange = { varyTemplates = it },
+                    modifier = Modifier.testTag("vary_templates_switch"),
+                )
+            }
+
+            Button(
+                onClick = { onRunAutoMatch(varyTemplates) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .minimumInteractiveComponentSize()
+                    .testTag("run_auto_match_button"),
+            ) {
+                Icon(Icons.Outlined.AutoFixHigh, contentDescription = null, modifier = Modifier.size(18.dp))
+                Text("  Generate Motion JSON & Scenes from SRT", fontWeight = FontWeight.Bold)
+            }
+
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                OutlinedButton(
+                    onClick = { importJsonLauncher.launch(arrayOf("application/json", "text/*", "*/*")) },
+                    modifier = Modifier.minimumInteractiveComponentSize().testTag("import_scene_json_button"),
                 ) {
-                    Icon(Icons.Outlined.AutoFixHigh, contentDescription = null, modifier = Modifier.size(18.dp))
-                    Text("  Generate Scenes Now", fontWeight = FontWeight.Bold)
+                    Text("Import .json")
+                }
+                OutlinedButton(
+                    onClick = { showJsonPasteDialog = true },
+                    modifier = Modifier.minimumInteractiveComponentSize().testTag("paste_scene_json_button"),
+                ) {
+                    Text("Paste / Edit JSON")
+                }
+                OutlinedButton(
+                    onClick = {
+                        val safeName = project.name.replace(Regex("[^\\p{L}\\p{N}_-]+"), "_").ifBlank { "scenes" }
+                        exportJsonLauncher.launch("${safeName}_motion.json")
+                    },
+                    enabled = activeJsonText.isNotBlank(),
+                    modifier = Modifier.minimumInteractiveComponentSize().testTag("export_scene_json_button"),
+                ) {
+                    Text("Export .json")
                 }
                 if (project.scenes.isNotEmpty()) {
                     OutlinedButton(
                         onClick = onGoToScenes,
                         modifier = Modifier.minimumInteractiveComponentSize(),
                     ) {
-                        Text("Edit (${project.scenes.size})")
+                        Text("Scenes (${project.scenes.size})")
+                    }
+                    Button(
+                        onClick = onGoToPreview,
+                        modifier = Modifier.minimumInteractiveComponentSize().testTag("auto_match_preview_button"),
+                    ) {
+                        Text("Play Preview →")
                     }
                 }
             }
+
+            Surface(
+                shape = RoundedCornerShape(12.dp),
+                color = MaterialTheme.colorScheme.surface,
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    Text(
+                        text = if (project.scenes.isNotEmpty()) "Active Scene Motion JSON" else "Preview of SRT → Scene Motion JSON (tap Generate to apply)",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.primary,
+                    )
+                    Text(
+                        text = activeJsonText.lines().take(26).joinToString("\n"),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
         }
+    }
+
+    if (showJsonPasteDialog) {
+        var draftJson by remember(activeJsonText) { mutableStateOf(activeJsonText) }
+        var errorLine by remember { mutableStateOf<String?>(null) }
+        androidx.compose.material3.AlertDialog(
+            onDismissRequest = { showJsonPasteDialog = false },
+            title = { Text("Paste / Edit Scene Motion JSON") },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    androidx.compose.material3.OutlinedTextField(
+                        value = draftJson,
+                        onValueChange = { draftJson = it; errorLine = null },
+                        minLines = 8,
+                        maxLines = 14,
+                        modifier = Modifier.fillMaxWidth().testTag("paste_scene_json_input"),
+                    )
+                    errorLine?.let {
+                        Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
+                    }
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        val check = com.example.feature.editor.SceneMotionJsonCodec.parseAndValidateSceneJson(
+                            rawJson = draftJson,
+                            allowedTemplateIds = allowedTemplateIds,
+                            fallbackTemplateId = project.templateId,
+                        )
+                        if (!check.isValid) {
+                            errorLine = check.errors.firstOrNull() ?: "Invalid Scene JSON."
+                        } else {
+                            onImportSceneJson(draftJson) { ok ->
+                                if (ok) showJsonPasteDialog = false
+                            }
+                        }
+                    },
+                ) {
+                    Text("Validate & Apply")
+                }
+            },
+            dismissButton = {
+                androidx.compose.material3.TextButton(onClick = { showJsonPasteDialog = false }) {
+                    Text("Cancel")
+                }
+            },
+        )
     }
 }

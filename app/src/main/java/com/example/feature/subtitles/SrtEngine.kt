@@ -2,6 +2,7 @@ package com.example.feature.subtitles
 
 import com.example.core.model.MotionPreset
 import com.example.core.model.SceneItem
+import com.example.core.model.SceneTransition
 import com.example.core.model.SrtIssueSeverity
 import com.example.core.model.SrtParseResult
 import com.example.core.model.SrtValidationIssue
@@ -403,26 +404,95 @@ object SrtEngine {
         }
     }
 
+    private val DYNAMIC_MOTION_CYCLE = listOf(
+        MotionPreset.WORD_STAGGER,
+        MotionPreset.SLIDE_UP,
+        MotionPreset.SCALE_IN,
+        MotionPreset.DRAW_LINE,
+        MotionPreset.SLIDE_LEFT,
+        MotionPreset.PARALLAX,
+        MotionPreset.REVEAL,
+    )
+
+    private val DYNAMIC_TRANSITION_CYCLE = listOf(
+        SceneTransition.CROSSFADE,
+        SceneTransition.SLIDE_UP,
+        SceneTransition.WIPE_RIGHT,
+        SceneTransition.ZOOM_THROUGH,
+    )
+
+    private val CURATED_MOTION_TEMPLATE_ROTATION = listOf(
+        "kinetic-type",
+        "cosmos-story",
+        "saas-product",
+        "shattered-glass",
+        "mint-glass",
+        "paper-cut",
+        "detective-board",
+        "comic-pop",
+        "3d-object-stage",
+        "interview-news",
+    )
+
     fun autoMatchScenesFromCues(
         cues: List<SubtitleCue>,
         script: String,
         templateId: String,
+        varyTemplates: Boolean = true,
     ): List<SceneItem> {
         val sourceCues = if (cues.isNotEmpty()) cues else generateCuesFromScript(script)
         if (sourceCues.isEmpty()) return emptyList()
+
+        val templatePool = buildList {
+            add(templateId)
+            if (varyTemplates) {
+                CURATED_MOTION_TEMPLATE_ROTATION.forEach { id ->
+                    if (id !in this) add(id)
+                }
+            }
+        }
+
         return sourceCues.mapIndexed { idx, cue ->
-            val lines = cue.text.split("\n").map { it.trim() }.filter { it.isNotEmpty() }
-            val headline = lines.firstOrNull().orEmpty()
-            val caption = if (lines.size > 1) lines.drop(1).joinToString(" ") else ""
+            val rawLines = cue.text.split("\n").map { it.trim() }.filter { it.isNotEmpty() }
+            val (headline, caption) = when {
+                rawLines.size >= 2 -> rawLines.first() to rawLines.drop(1).joinToString(" ")
+                rawLines.size == 1 -> {
+                    val words = rawLines[0].split(Regex("\\s+")).filter { it.isNotBlank() }
+                    if (words.size >= 6) {
+                        val splitAt = (words.size * 0.55f).toInt().coerceIn(3, words.size - 2)
+                        words.take(splitAt).joinToString(" ") to words.drop(splitAt).joinToString(" ")
+                    } else {
+                        rawLines[0] to ""
+                    }
+                }
+                else -> "দৃশ্য ${idx + 1}" to ""
+            }
+
+            val keyword = headline
+                .split(Regex("\\s+"))
+                .map { it.trim(',', '.', '।', '!', '?', ':', ';', '"', '\'') }
+                .filter { it.length >= 3 }
+                .maxByOrNull { it.length }
+                .orEmpty()
+
+            val chosenTemplate = if (varyTemplates && idx > 0) {
+                templatePool[idx % templatePool.size]
+            } else {
+                templateId
+            }
+
             SceneItem(
                 id = UUID.randomUUID().toString(),
                 orderIndex = idx,
                 headline = headline,
                 caption = caption,
                 startMs = cue.startMs,
-                endMs = maxOf(cue.endMs, cue.startMs + 800L),
-                templateId = templateId,
-                motionPreset = if (idx % 2 == 0) MotionPreset.SLIDE_UP else MotionPreset.FADE,
+                endMs = maxOf(cue.endMs, cue.startMs + 1_200L),
+                templateId = chosenTemplate,
+                motionPreset = DYNAMIC_MOTION_CYCLE[idx % DYNAMIC_MOTION_CYCLE.size],
+                transitionIn = if (idx == 0) SceneTransition.CROSSFADE else DYNAMIC_TRANSITION_CYCLE[idx % DYNAMIC_TRANSITION_CYCLE.size],
+                badgeLabel = String.format(Locale.US, "SCENE %02d", idx + 1),
+                highlightWord = keyword,
             )
         }
     }

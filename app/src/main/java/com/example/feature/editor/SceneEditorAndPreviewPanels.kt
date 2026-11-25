@@ -63,9 +63,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import com.example.core.model.MotionPreset
 import com.example.core.model.Project
 import com.example.core.model.SceneItem
+import com.example.core.model.SceneTransition
 import com.example.core.render.RenderFrameInput
 import com.example.core.render.SceneFrameRenderer
 import com.example.data.templates.TemplateDefinition
@@ -327,7 +330,7 @@ private fun SceneEditorCard(
                         maxLines = 2,
                     )
                     Text(
-                        text = "${SrtEngine.formatCompactDuration(scene.startMs)} → ${SrtEngine.formatCompactDuration(scene.endMs)} · ${scene.motionPreset.displayLabel}",
+                        text = "${SrtEngine.formatCompactDuration(scene.startMs)} → ${SrtEngine.formatCompactDuration(scene.endMs)} · ${scene.motionPreset.displayLabel} · ${scene.transitionIn.displayLabel}",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -373,16 +376,24 @@ private fun EditSceneDialog(
 ) {
     var headline by remember(scene.id) { mutableStateOf(scene.headline) }
     var caption by remember(scene.id) { mutableStateOf(scene.caption) }
+    var badgeLabel by remember(scene.id) { mutableStateOf(scene.badgeLabel) }
+    var highlightWord by remember(scene.id) { mutableStateOf(scene.highlightWord) }
     var durationSec by remember(scene.id) { mutableStateOf((scene.durationMs / 1000f).coerceIn(1f, 15f)) }
     var selectedTemplate by remember(scene.id) { mutableStateOf(scene.templateId) }
     var selectedMotion by remember(scene.id) { mutableStateOf(scene.motionPreset) }
+    var selectedTransition by remember(scene.id) { mutableStateOf(scene.transitionIn) }
     var clearImage by remember(scene.id) { mutableStateOf(false) }
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Edit Scene") },
+        title = { Text("Edit Motion Scene") },
         text = {
-            Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            Column(
+                modifier = Modifier
+                    .heightIn(max = 420.dp)
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
                 OutlinedTextField(
                     value = headline,
                     onValueChange = { headline = it },
@@ -397,6 +408,22 @@ private fun EditSceneDialog(
                     maxLines = 2,
                     modifier = Modifier.fillMaxWidth(),
                 )
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    OutlinedTextField(
+                        value = badgeLabel,
+                        onValueChange = { badgeLabel = it.take(24) },
+                        label = { Text("Badge") },
+                        singleLine = true,
+                        modifier = Modifier.weight(1f),
+                    )
+                    OutlinedTextField(
+                        value = highlightWord,
+                        onValueChange = { highlightWord = it.take(32) },
+                        label = { Text("Highlight Word") },
+                        singleLine = true,
+                        modifier = Modifier.weight(1f),
+                    )
+                }
                 Text("Duration: ${String.format("%.1f", durationSec)} s", style = MaterialTheme.typography.labelMedium)
                 Slider(
                     value = durationSec,
@@ -406,15 +433,7 @@ private fun EditSceneDialog(
 
                 Text("Motion Preset", style = MaterialTheme.typography.labelMedium)
                 FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                    listOf(
-                        MotionPreset.FADE,
-                        MotionPreset.SLIDE_UP,
-                        MotionPreset.SLIDE_LEFT,
-                        MotionPreset.SCALE_IN,
-                        MotionPreset.WORD_STAGGER,
-                        MotionPreset.DRAW_LINE,
-                        MotionPreset.NONE,
-                    ).forEach { preset ->
+                    MotionPreset.entries.forEach { preset ->
                         FilterChip(
                             selected = selectedMotion == preset,
                             onClick = { selectedMotion = preset },
@@ -423,9 +442,20 @@ private fun EditSceneDialog(
                     }
                 }
 
-                Text("Template", style = MaterialTheme.typography.labelMedium)
+                Text("Scene Transition", style = MaterialTheme.typography.labelMedium)
                 FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                    templates.take(8).forEach { tpl ->
+                    SceneTransition.entries.forEach { tr ->
+                        FilterChip(
+                            selected = selectedTransition == tr,
+                            onClick = { selectedTransition = tr },
+                            label = { Text(tr.displayLabel) },
+                        )
+                    }
+                }
+
+                Text("Template (${templates.size})", style = MaterialTheme.typography.labelMedium)
+                FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    templates.forEach { tpl ->
                         FilterChip(
                             selected = selectedTemplate == tpl.id,
                             onClick = { selectedTemplate = tpl.id },
@@ -449,9 +479,12 @@ private fun EditSceneDialog(
                         scene.copy(
                             headline = headline,
                             caption = caption,
+                            badgeLabel = badgeLabel,
+                            highlightWord = highlightWord,
                             endMs = scene.startMs + durMs,
                             templateId = selectedTemplate,
                             motionPreset = selectedMotion,
+                            transitionIn = selectedTransition,
                             backgroundImagePath = if (clearImage) null else scene.backgroundImagePath,
                         ),
                     )
@@ -497,7 +530,7 @@ fun StudioPreviewStepPanel(
             project.audioAsset?.let { audio ->
                 audioEngine.playAudio(audio.localPath, startPositionMs = audio.trimStartMs + playheadMs)
             }
-            val stepMs = 66L // ~15fps smooth deterministic Canvas preview
+            val stepMs = 33L // ~30fps smooth deterministic Canvas preview matching MP4 export
             while (isPlaying) {
                 delay(stepMs)
                 val next = playheadMs + stepMs

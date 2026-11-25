@@ -323,20 +323,54 @@ class StudioViewModel(
         }
     }
 
-    // --- Milestone 5: Auto Match & Scene Editor ---
-    fun autoMatchScenes(project: Project) {
+    // --- Milestone 5: Auto Match, Scene Motion JSON & Scene Editor ---
+    fun autoMatchScenes(project: Project, varyTemplates: Boolean = true) {
+        val effectiveCues = if (project.subtitleCues.isNotEmpty()) {
+            project.subtitleCues
+        } else {
+            SrtEngine.generateCuesFromScript(project.script)
+        }
+        if (effectiveCues.isEmpty()) {
+            showMessage("Add SRT subtitles or script lines before generating Motion JSON scenes.")
+            return
+        }
         val matched = SrtEngine.autoMatchScenesFromCues(
-            cues = project.subtitleCues,
+            cues = effectiveCues,
             script = project.script,
             templateId = project.templateId,
+            varyTemplates = varyTemplates,
         )
-        if (matched.isEmpty()) {
-            showMessage("Add SRT subtitles or script lines before running Auto Match.")
+        viewModelScope.launch {
+            if (project.subtitleCues.isEmpty()) {
+                projectRepository.updateSubtitles(project.id, effectiveCues)
+            }
+            projectRepository.updateScenes(project.id, matched)
+            showMessage("Generated ${matched.size} animated scenes from SRT + Motion JSON.")
+        }
+    }
+
+    fun importSceneMotionJson(
+        projectId: String,
+        fallbackTemplateId: String,
+        rawJson: String,
+        onComplete: (Boolean) -> Unit = {},
+    ) {
+        val allowedIds = templateCatalog.templates.map { it.id }.toSet()
+        val parsed = com.example.feature.editor.SceneMotionJsonCodec.parseAndValidateSceneJson(
+            rawJson = rawJson,
+            allowedTemplateIds = allowedIds,
+            fallbackTemplateId = fallbackTemplateId,
+        )
+        if (!parsed.isValid) {
+            showMessage("Scene JSON invalid: ${parsed.errors.firstOrNull() ?: "Unknown error"}")
+            onComplete(false)
             return
         }
         viewModelScope.launch {
-            projectRepository.updateScenes(project.id, matched)
-            showMessage("Auto-matched ${matched.size} scenes using ${project.templateId}.")
+            projectRepository.updateScenes(projectId, parsed.scenes)
+            val warnSuffix = if (parsed.warnings.isNotEmpty()) " (${parsed.warnings.size} warning)" else ""
+            showMessage("Applied ${parsed.scenes.size} motion scenes from JSON$warnSuffix.")
+            onComplete(true)
         }
     }
 

@@ -10,6 +10,7 @@ import com.example.core.model.ExportResolution
 import com.example.core.model.MotionPreset
 import com.example.core.model.Project
 import com.example.core.model.SceneItem
+import com.example.core.model.SceneTransition
 import com.example.core.model.SubtitleCue
 import com.example.core.model.WatermarkLayer
 import com.example.core.model.WatermarkSettings
@@ -111,6 +112,9 @@ object ProjectJsonCodec {
                     put("backgroundImagePath", scene.backgroundImagePath ?: JSONObject.NULL)
                     put("accentHex", scene.accentHex ?: JSONObject.NULL)
                     put("motionPreset", scene.motionPreset.id)
+                    put("transitionIn", scene.transitionIn.id)
+                    put("badgeLabel", scene.badgeLabel)
+                    put("highlightWord", scene.highlightWord)
                     put("reducedMotion", scene.reducedMotion)
                 },
             )
@@ -137,6 +141,9 @@ object ProjectJsonCodec {
                             backgroundImagePath = if (obj.isNull("backgroundImagePath")) null else obj.optString("backgroundImagePath").ifBlank { null },
                             accentHex = if (obj.isNull("accentHex")) null else obj.optString("accentHex").ifBlank { null },
                             motionPreset = MotionPreset.fromId(obj.optString("motionPreset")),
+                            transitionIn = SceneTransition.fromId(obj.optString("transitionIn")),
+                            badgeLabel = obj.optString("badgeLabel", ""),
+                            highlightWord = obj.optString("highlightWord", ""),
                             reducedMotion = obj.optBoolean("reducedMotion", false),
                         ),
                     )

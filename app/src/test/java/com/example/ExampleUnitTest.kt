@@ -168,6 +168,25 @@ class ExampleUnitTest {
     }
 
     @Test
+    fun srtAutoMatch_generatesVariedMotionPresetsTransitionsAndHighlights() {
+        val cues = SrtEngine.generateCuesFromScript(
+            "আজকের গল্পে তোমাকে অনেক অনেক স্বাগতম জানাচ্ছি।\nচলো বাংলা-মোশন দিয়ে দুর্দান্ত ভিডিও বানাই।\nশেষ পর্যন্ত ভিডিওটি দেখতে থাকো!",
+        )
+        val scenes = SrtEngine.autoMatchScenesFromCues(
+            cues = cues,
+            script = "",
+            templateId = "minimal-text",
+            varyTemplates = true,
+        )
+        assertEquals(3, scenes.size)
+        assertEquals("SCENE 01", scenes[0].badgeLabel)
+        assertTrue(scenes.map { it.motionPreset }.toSet().size >= 2)
+        assertTrue(scenes.map { it.transitionIn }.toSet().size >= 2)
+        assertTrue(scenes.map { it.templateId }.toSet().size >= 2)
+        assertTrue(scenes.any { it.highlightWord.isNotBlank() })
+    }
+
+    @Test
     fun localizationStrings_coverBengaliEnglishAndBilingual() {
         val bn = stringsFor(AppLanguage.BENGALI)
         val en = stringsFor(AppLanguage.ENGLISH)

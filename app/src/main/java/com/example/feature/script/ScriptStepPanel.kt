@@ -159,7 +159,7 @@ fun ScriptStepPanel(
                     ) {
                         Icon(Icons.Outlined.AutoFixHigh, contentDescription = null, modifier = Modifier.size(18.dp))
                         Spacer(modifier = Modifier.width(6.dp))
-                        Text("Auto Match")
+                        Text("Motion JSON")
                     }
                 }
             }
