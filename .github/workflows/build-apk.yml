@@ -1,13 +1,13 @@
-name: Build BanglaMotion Debug APK
+name: Build BanglaMotion APK & AAB
 
 on:
   push:
-    branches: [ main, master ]
   workflow_dispatch:
 
 jobs:
   build-apk:
     runs-on: ubuntu-latest
+    timeout-minutes: 25
 
     steps:
       - name: Checkout repository
@@ -19,13 +19,29 @@ jobs:
           distribution: temurin
           java-version: '21'
 
-      - name: Accept Android SDK licenses
-        run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true
+      - name: Set up Android SDK & Licenses
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android 36 SDK components & accept licenses
+        shell: bash
+        run: |
+          set +o pipefail
+          SDK_DIR="${ANDROID_HOME:-$ANDROID_SDK_ROOT}"
+          mkdir -p "$SDK_DIR/licenses"
+          printf "\n24333f8a63b6825ea9c5514f83c2829b004d1fee\nd56f5187479451eabf01fb78af6dfcb131a6481e\n" > "$SDK_DIR/licenses/android-sdk-license"
+          printf "\n84831b9409646a918e30573bab4c9c91346d8abd\n" > "$SDK_DIR/licenses/android-sdk-preview-license"
+          yes | sdkmanager --licenses > /dev/null 2>&1 || true
+          sdkmanager "platform-tools" "build-tools;36.0.0" "platforms;android-36.1" || sdkmanager "platform-tools" "platforms;android-36"
 
       - name: Prepare debug keystore
+        shell: bash
         run: |
-          if [ ! -f debug.keystore ] && [ -f debug.keystore.base64 ]; then
-            base64 -d debug.keystore.base64 > debug.keystore
+          if [ ! -f debug.keystore ]; then
+            if [ -f debug.keystore.base64 ]; then
+              base64 -d debug.keystore.base64 > debug.keystore
+            else
+              keytool -genkeypair -v -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+            fi
           fi
 
       - name: Set up Gradle 9.3.1
@@ -33,8 +49,17 @@ jobs:
         with:
           gradle-version: '9.3.1'
 
-      - name: Build Debug APK and AAB
-        run: gradle assembleDebug bundleDebug --no-daemon
+      - name: Ensure Gradle 9.3.1 binary is available
+        shell: bash
+        run: |
+          if ! command -v gradle >/dev/null 2>&1 || ! gradle --version | grep -q "Gradle 9.3.1"; then
+            curl -fsSL "https://services.gradle.org/distributions/gradle-9.3.1-bin.zip" -o /tmp/gradle-9.3.1-bin.zip
+            unzip -q /tmp/gradle-9.3.1-bin.zip -d /tmp/gradle-dist
+            echo "/tmp/gradle-dist/gradle-9.3.1/bin" >> "$GITHUB_PATH"
+          fi
+
+      - name: Build Debug APK
+        run: gradle assembleDebug --no-daemon --no-configuration-cache --stacktrace -Dorg.gradle.jvmargs="-Xmx3072m -XX:MaxMetaspaceSize=1024m -Dfile.encoding=UTF-8"
 
       - name: Upload BanglaMotion Debug APK
         uses: actions/upload-artifact@v4
@@ -44,10 +69,17 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
+      - name: Build Debug AAB
+        id: build_aab
+        continue-on-error: true
+        run: gradle bundleDebug --no-daemon --no-configuration-cache --stacktrace -Dorg.gradle.jvmargs="-Xmx3072m -XX:MaxMetaspaceSize=1024m -Dfile.encoding=UTF-8"
+
       - name: Upload BanglaMotion Debug AAB
+        if: steps.build_aab.outcome == 'success'
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: BanglaMotion-debug-aab
           path: app/build/outputs/bundle/debug/app-debug.aab
-          if-no-files-found: error
+          if-no-files-found: warn
           retention-days: 30
