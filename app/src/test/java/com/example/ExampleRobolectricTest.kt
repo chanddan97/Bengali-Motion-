@@ -208,4 +208,24 @@ class ExampleRobolectricTest {
         assertTrue(saved.defaultWatermarkSettings.user.enabled)
         assertFalse(saved.defaultWatermarkSettings.developer.enabled)
     }
+
+    @Test
+    fun optionalAiClient_validatesSchemaAndRejectsUnknownTemplateIds() {
+        val client = com.example.ai.provider.OptionalAiClient()
+        val allowed = setOf("minimal-text", "cosmos-story")
+        val raw = """
+            {
+              "hookTitle": "বাংলা হুক",
+              "scenes": [
+                {"headline": "প্রথম সিন", "caption": "বিবরণ", "templateId": "cosmos-story"},
+                {"headline": "দ্বিতীয় সিন", "caption": "অন্য", "templateId": "malicious-eval-id"}
+              ]
+            }
+        """.trimIndent()
+        val parsed = client.parseAndValidateResponse(raw, allowed)
+        assertEquals("বাংলা হুক", parsed.hookTitle)
+        assertEquals(2, parsed.sceneDrafts.size)
+        assertEquals("cosmos-story", parsed.sceneDrafts[0].suggestedTemplateId)
+        assertEquals("minimal-text", parsed.sceneDrafts[1].suggestedTemplateId)
+    }
 }
