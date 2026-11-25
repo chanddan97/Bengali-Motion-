@@ -1,0 +1,210 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/banglamotion/template.schema.json",
+  "title": "BanglaMotion Template Catalog",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "catalogVersion",
+    "templates"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "string"
+    },
+    "catalogVersion": {
+      "type": "string"
+    },
+    "templates": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "origin",
+          "category",
+          "description",
+          "aspectRatios",
+          "layers",
+          "motion",
+          "accessibility"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "origin": {
+            "enum": [
+              "observed-label-original-design",
+              "proposed-original"
+            ]
+          },
+          "category": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "text",
+                "3d",
+                "news",
+                "product",
+                "brand",
+                "story",
+                "education",
+                "editorial",
+                "utility"
+              ]
+            },
+            "minItems": 1
+          },
+          "description": {
+            "type": "string"
+          },
+          "aspectRatios": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "9:16",
+                "1:1",
+                "4:5",
+                "16:9"
+              ]
+            },
+            "minItems": 1
+          },
+          "layers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "type",
+                "role",
+                "x",
+                "y",
+                "width",
+                "height",
+                "opacity"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "type": {
+                  "enum": [
+                    "text",
+                    "shape",
+                    "image",
+                    "video",
+                    "line",
+                    "badge"
+                  ]
+                },
+                "role": {
+                  "type": "string"
+                },
+                "x": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "y": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "width": {
+                  "type": "number",
+                  "exclusiveMinimum": 0,
+                  "maximum": 1
+                },
+                "height": {
+                  "type": "number",
+                  "exclusiveMinimum": 0,
+                  "maximum": 1
+                },
+                "opacity": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "textStyle": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "motion": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "type",
+                "durationMs",
+                "delayMs"
+              ],
+              "properties": {
+                "type": {
+                  "enum": [
+                    "fade",
+                    "slide-up",
+                    "slide-down",
+                    "slide-left",
+                    "slide-right",
+                    "scale-in",
+                    "reveal",
+                    "draw-line",
+                    "parallax",
+                    "word-stagger",
+                    "none"
+                  ]
+                },
+                "durationMs": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 10000
+                },
+                "delayMs": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 30000
+                }
+              }
+            }
+          },
+          "accessibility": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "minimumContrastNote",
+              "bengaliTextSafe",
+              "reducedMotionSupported"
+            ],
+            "properties": {
+              "minimumContrastNote": {
+                "type": "string"
+              },
+              "bengaliTextSafe": {
+                "type": "boolean"
+              },
+              "reducedMotionSupported": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

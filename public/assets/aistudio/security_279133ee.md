@@ -1,0 +1,11 @@
+# Security and Privacy
+- Never put production API keys in APK assets, source, logs or client preferences.
+- Use a server-side proxy for production AI requests.
+- Treat scripts, SRT, filenames, template JSON and model outputs as untrusted input.
+- Validate JSON schema and allow-list layer/motion types.
+- Never execute code contained in JSON.
+- Ask consent before sending audio/images to an AI provider.
+- Request microphone permission only when recording starts.
+- Use Android file picker rather than broad storage access where possible.
+- Explain where projects and media are stored and how to delete them.
+- Avoid analytics or uploads by default for this personal-use app.

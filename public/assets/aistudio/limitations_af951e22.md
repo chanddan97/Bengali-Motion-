@@ -1,0 +1,2 @@
+# Reference Inspection Limitations
+The primary mobile tutorial was visually sampled at roughly five-second intervals. This supports identification of the broad workflow and the ten labels listed in the catalogue, but does not prove every transition, every hidden gallery card, exact design token, or complete feature implementation. The audio stream was present, but a reliable full transcript was not obtained. Therefore all detailed template art direction in the updated pack is original proposed implementation guidance, not source-verified reproduction.

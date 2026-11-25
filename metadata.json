@@ -1,0 +1,6 @@
+{
+  "name": "BanglaMotion",
+  "description": "Bengali-first local-first Android motion graphics studio for scripts, subtitles, templates, watermarks, and MP4 video creation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

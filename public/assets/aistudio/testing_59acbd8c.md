@@ -1,0 +1,18 @@
+# Testing Checklist
+- [ ] Create, rename, delete and restore project.
+- [ ] Force-close/reopen; verify autosave.
+- [ ] Bengali and mixed-language script rendering.
+- [ ] Import valid UTF-8 SRT with multiline Bengali cues.
+- [ ] Reject malformed timestamps without corrupting project.
+- [ ] Edit, offset, split and merge cues.
+- [ ] Export SRT and re-import it.
+- [ ] Verify every template ID exists and renders.
+- [ ] Verify observed vs proposed origin labels.
+- [ ] User watermark off/on/text/image/opacity/position.
+- [ ] Developer watermark off/on.
+- [ ] Both watermarks on; overlap warning.
+- [ ] Preview/export watermark parity.
+- [ ] Low storage, interrupted export, retry.
+- [ ] Actual MP4 plays on target Android device.
+- [ ] Inspect APK/source for API secrets.
+- [ ] Test airplane mode for offline features.

@@ -1,0 +1,1605 @@
+{
+  "schemaVersion": "1.0.0",
+  "catalogVersion": "1.0.0",
+  "templates": [
+    {
+      "id": "minimal-text",
+      "name": "Minimal Text",
+      "origin": "observed-label-original-design",
+      "category": [
+        "text"
+      ],
+      "description": "Clean headline layout with large Bengali-safe text and whitespace.",
+      "aspectRatios": [
+        "9:16",
+        "1:1",
+        "4:5",
+        "16:9"
+      ],
+      "layers": [
+        {
+          "id": "background",
+          "type": "shape",
+          "role": "background",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1,
+          "opacity": 1.0,
+          "textStyle": {
+            "fillToken": "surface-background"
+          }
+        },
+        {
+          "id": "headline",
+          "type": "text",
+          "role": "headline",
+          "x": 0.08,
+          "y": 0.3,
+          "width": 0.84,
+          "height": 0.22,
+          "opacity": 1.0,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "bold",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        },
+        {
+          "id": "caption",
+          "type": "text",
+          "role": "caption",
+          "x": 0.1,
+          "y": 0.58,
+          "width": 0.8,
+          "height": 0.14,
+          "opacity": 0.92,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "regular",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        }
+      ],
+      "motion": [
+        {
+          "type": "fade",
+          "durationMs": 350,
+          "delayMs": 0
+        },
+        {
+          "type": "slide-up",
+          "durationMs": 500,
+          "delayMs": 100
+        }
+      ],
+      "accessibility": {
+        "minimumContrastNote": "Use high-contrast foreground/background tokens and test Bengali glyph rendering.",
+        "bengaliTextSafe": true,
+        "reducedMotionSupported": true
+      }
+    },
+    {
+      "id": "saas-product",
+      "name": "SaaS Product",
+      "origin": "observed-label-original-design",
+      "category": [
+        "product",
+        "brand"
+      ],
+      "description": "Product explainer card with UI mockup and feature chips.",
+      "aspectRatios": [
+        "9:16",
+        "1:1",
+        "4:5",
+        "16:9"
+      ],
+      "layers": [
+        {
+          "id": "background",
+          "type": "shape",
+          "role": "background",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1,
+          "opacity": 1.0,
+          "textStyle": {
+            "fillToken": "surface-background"
+          }
+        },
+        {
+          "id": "headline",
+          "type": "text",
+          "role": "headline",
+          "x": 0.08,
+          "y": 0.3,
+          "width": 0.84,
+          "height": 0.22,
+          "opacity": 1.0,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "bold",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        },
+        {
+          "id": "caption",
+          "type": "text",
+          "role": "caption",
+          "x": 0.1,
+          "y": 0.58,
+          "width": 0.8,
+          "height": 0.14,
+          "opacity": 0.92,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "regular",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        }
+      ],
+      "motion": [
+        {
+          "type": "fade",
+          "durationMs": 350,
+          "delayMs": 0
+        },
+        {
+          "type": "slide-up",
+          "durationMs": 500,
+          "delayMs": 100
+        }
+      ],
+      "accessibility": {
+        "minimumContrastNote": "Use high-contrast foreground/background tokens and test Bengali glyph rendering.",
+        "bengaliTextSafe": true,
+        "reducedMotionSupported": true
+      }
+    },
+    {
+      "id": "shattered-glass",
+      "name": "Shattered Glass",
+      "origin": "observed-label-original-design",
+      "category": [
+        "text",
+        "story"
+      ],
+      "description": "Abstract polygon shard composition with a central safe text panel.",
+      "aspectRatios": [
+        "9:16",
+        "1:1",
+        "4:5",
+        "16:9"
+      ],
+      "layers": [
+        {
+          "id": "background",
+          "type": "shape",
+          "role": "background",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1,
+          "opacity": 1.0,
+          "textStyle": {
+            "fillToken": "surface-background"
+          }
+        },
+        {
+          "id": "headline",
+          "type": "text",
+          "role": "headline",
+          "x": 0.08,
+          "y": 0.3,
+          "width": 0.84,
+          "height": 0.22,
+          "opacity": 1.0,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "bold",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        },
+        {
+          "id": "caption",
+          "type": "text",
+          "role": "caption",
+          "x": 0.1,
+          "y": 0.58,
+          "width": 0.8,
+          "height": 0.14,
+          "opacity": 0.92,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "regular",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        }
+      ],
+      "motion": [
+        {
+          "type": "fade",
+          "durationMs": 350,
+          "delayMs": 0
+        },
+        {
+          "type": "slide-up",
+          "durationMs": 500,
+          "delayMs": 100
+        }
+      ],
+      "accessibility": {
+        "minimumContrastNote": "Use high-contrast foreground/background tokens and test Bengali glyph rendering.",
+        "bengaliTextSafe": true,
+        "reducedMotionSupported": true
+      }
+    },
+    {
+      "id": "detective-board",
+      "name": "Detective Board",
+      "origin": "observed-label-original-design",
+      "category": [
+        "story",
+        "editorial"
+      ],
+      "description": "Pinned paper cards and connector lines on a board-like background.",
+      "aspectRatios": [
+        "9:16",
+        "1:1",
+        "4:5",
+        "16:9"
+      ],
+      "layers": [
+        {
+          "id": "background",
+          "type": "shape",
+          "role": "background",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1,
+          "opacity": 1.0,
+          "textStyle": {
+            "fillToken": "surface-background"
+          }
+        },
+        {
+          "id": "headline",
+          "type": "text",
+          "role": "headline",
+          "x": 0.08,
+          "y": 0.3,
+          "width": 0.84,
+          "height": 0.22,
+          "opacity": 1.0,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "bold",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        },
+        {
+          "id": "caption",
+          "type": "text",
+          "role": "caption",
+          "x": 0.1,
+          "y": 0.58,
+          "width": 0.8,
+          "height": 0.14,
+          "opacity": 0.92,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "regular",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        }
+      ],
+      "motion": [
+        {
+          "type": "fade",
+          "durationMs": 350,
+          "delayMs": 0
+        },
+        {
+          "type": "slide-up",
+          "durationMs": 500,
+          "delayMs": 100
+        }
+      ],
+      "accessibility": {
+        "minimumContrastNote": "Use high-contrast foreground/background tokens and test Bengali glyph rendering.",
+        "bengaliTextSafe": true,
+        "reducedMotionSupported": true
+      }
+    },
+    {
+      "id": "folded-photo-story",
+      "name": "Folded Photo Story",
+      "origin": "observed-label-original-design",
+      "category": [
+        "story",
+        "editorial"
+      ],
+      "description": "Layered photo frames and paper-fold-inspired caption panels.",
+      "aspectRatios": [
+        "9:16",
+        "1:1",
+        "4:5",
+        "16:9"
+      ],
+      "layers": [
+        {
+          "id": "background",
+          "type": "shape",
+          "role": "background",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1,
+          "opacity": 1.0,
+          "textStyle": {
+            "fillToken": "surface-background"
+          }
+        },
+        {
+          "id": "headline",
+          "type": "text",
+          "role": "headline",
+          "x": 0.08,
+          "y": 0.3,
+          "width": 0.84,
+          "height": 0.22,
+          "opacity": 1.0,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "bold",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        },
+        {
+          "id": "caption",
+          "type": "text",
+          "role": "caption",
+          "x": 0.1,
+          "y": 0.58,
+          "width": 0.8,
+          "height": 0.14,
+          "opacity": 0.92,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "regular",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        }
+      ],
+      "motion": [
+        {
+          "type": "fade",
+          "durationMs": 350,
+          "delayMs": 0
+        },
+        {
+          "type": "slide-up",
+          "durationMs": 500,
+          "delayMs": 100
+        }
+      ],
+      "accessibility": {
+        "minimumContrastNote": "Use high-contrast foreground/background tokens and test Bengali glyph rendering.",
+        "bengaliTextSafe": true,
+        "reducedMotionSupported": true
+      }
+    },
+    {
+      "id": "interview-news",
+      "name": "Interview / News",
+      "origin": "observed-label-original-design",
+      "category": [
+        "news",
+        "brand"
+      ],
+      "description": "Broadcast-style headline band and lower-third composition.",
+      "aspectRatios": [
+        "9:16",
+        "1:1",
+        "4:5",
+        "16:9"
+      ],
+      "layers": [
+        {
+          "id": "background",
+          "type": "shape",
+          "role": "background",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1,
+          "opacity": 1.0,
+          "textStyle": {
+            "fillToken": "surface-background"
+          }
+        },
+        {
+          "id": "headline",
+          "type": "text",
+          "role": "headline",
+          "x": 0.08,
+          "y": 0.3,
+          "width": 0.84,
+          "height": 0.22,
+          "opacity": 1.0,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "bold",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        },
+        {
+          "id": "caption",
+          "type": "text",
+          "role": "caption",
+          "x": 0.1,
+          "y": 0.58,
+          "width": 0.8,
+          "height": 0.14,
+          "opacity": 0.92,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "regular",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        }
+      ],
+      "motion": [
+        {
+          "type": "fade",
+          "durationMs": 350,
+          "delayMs": 0
+        },
+        {
+          "type": "slide-up",
+          "durationMs": 500,
+          "delayMs": 100
+        }
+      ],
+      "accessibility": {
+        "minimumContrastNote": "Use high-contrast foreground/background tokens and test Bengali glyph rendering.",
+        "bengaliTextSafe": true,
+        "reducedMotionSupported": true
+      }
+    },
+    {
+      "id": "cosmos-story",
+      "name": "Cosmos Story",
+      "origin": "observed-label-original-design",
+      "category": [
+        "story",
+        "text"
+      ],
+      "description": "Abstract starfield and planet shapes with a readable title panel.",
+      "aspectRatios": [
+        "9:16",
+        "1:1",
+        "4:5",
+        "16:9"
+      ],
+      "layers": [
+        {
+          "id": "background",
+          "type": "shape",
+          "role": "background",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1,
+          "opacity": 1.0,
+          "textStyle": {
+            "fillToken": "surface-background"
+          }
+        },
+        {
+          "id": "headline",
+          "type": "text",
+          "role": "headline",
+          "x": 0.08,
+          "y": 0.3,
+          "width": 0.84,
+          "height": 0.22,
+          "opacity": 1.0,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "bold",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        },
+        {
+          "id": "caption",
+          "type": "text",
+          "role": "caption",
+          "x": 0.1,
+          "y": 0.58,
+          "width": 0.8,
+          "height": 0.14,
+          "opacity": 0.92,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "regular",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        }
+      ],
+      "motion": [
+        {
+          "type": "fade",
+          "durationMs": 350,
+          "delayMs": 0
+        },
+        {
+          "type": "slide-up",
+          "durationMs": 500,
+          "delayMs": 100
+        }
+      ],
+      "accessibility": {
+        "minimumContrastNote": "Use high-contrast foreground/background tokens and test Bengali glyph rendering.",
+        "bengaliTextSafe": true,
+        "reducedMotionSupported": true
+      }
+    },
+    {
+      "id": "mint-glass",
+      "name": "Mint Glass",
+      "origin": "observed-label-original-design",
+      "category": [
+        "brand",
+        "product"
+      ],
+      "description": "Mint backdrop with translucent rounded content panels.",
+      "aspectRatios": [
+        "9:16",
+        "1:1",
+        "4:5",
+        "16:9"
+      ],
+      "layers": [
+        {
+          "id": "background",
+          "type": "shape",
+          "role": "background",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1,
+          "opacity": 1.0,
+          "textStyle": {
+            "fillToken": "surface-background"
+          }
+        },
+        {
+          "id": "headline",
+          "type": "text",
+          "role": "headline",
+          "x": 0.08,
+          "y": 0.3,
+          "width": 0.84,
+          "height": 0.22,
+          "opacity": 1.0,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "bold",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        },
+        {
+          "id": "caption",
+          "type": "text",
+          "role": "caption",
+          "x": 0.1,
+          "y": 0.58,
+          "width": 0.8,
+          "height": 0.14,
+          "opacity": 0.92,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "regular",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        }
+      ],
+      "motion": [
+        {
+          "type": "fade",
+          "durationMs": 350,
+          "delayMs": 0
+        },
+        {
+          "type": "slide-up",
+          "durationMs": 500,
+          "delayMs": 100
+        }
+      ],
+      "accessibility": {
+        "minimumContrastNote": "Use high-contrast foreground/background tokens and test Bengali glyph rendering.",
+        "bengaliTextSafe": true,
+        "reducedMotionSupported": true
+      }
+    },
+    {
+      "id": "documentary",
+      "name": "Documentary",
+      "origin": "observed-label-original-design",
+      "category": [
+        "story",
+        "editorial"
+      ],
+      "description": "Cinematic still frame with restrained title and subtle motion.",
+      "aspectRatios": [
+        "9:16",
+        "1:1",
+        "4:5",
+        "16:9"
+      ],
+      "layers": [
+        {
+          "id": "background",
+          "type": "shape",
+          "role": "background",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1,
+          "opacity": 1.0,
+          "textStyle": {
+            "fillToken": "surface-background"
+          }
+        },
+        {
+          "id": "headline",
+          "type": "text",
+          "role": "headline",
+          "x": 0.08,
+          "y": 0.3,
+          "width": 0.84,
+          "height": 0.22,
+          "opacity": 1.0,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "bold",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        },
+        {
+          "id": "caption",
+          "type": "text",
+          "role": "caption",
+          "x": 0.1,
+          "y": 0.58,
+          "width": 0.8,
+          "height": 0.14,
+          "opacity": 0.92,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "regular",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        }
+      ],
+      "motion": [
+        {
+          "type": "fade",
+          "durationMs": 350,
+          "delayMs": 0
+        },
+        {
+          "type": "slide-up",
+          "durationMs": 500,
+          "delayMs": 100
+        }
+      ],
+      "accessibility": {
+        "minimumContrastNote": "Use high-contrast foreground/background tokens and test Bengali glyph rendering.",
+        "bengaliTextSafe": true,
+        "reducedMotionSupported": true
+      }
+    },
+    {
+      "id": "qa-answer",
+      "name": "Q&A Answer",
+      "origin": "observed-label-original-design",
+      "category": [
+        "education",
+        "text"
+      ],
+      "description": "Question card followed by a distinct answer panel.",
+      "aspectRatios": [
+        "9:16",
+        "1:1",
+        "4:5",
+        "16:9"
+      ],
+      "layers": [
+        {
+          "id": "background",
+          "type": "shape",
+          "role": "background",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1,
+          "opacity": 1.0,
+          "textStyle": {
+            "fillToken": "surface-background"
+          }
+        },
+        {
+          "id": "headline",
+          "type": "text",
+          "role": "headline",
+          "x": 0.08,
+          "y": 0.3,
+          "width": 0.84,
+          "height": 0.22,
+          "opacity": 1.0,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "bold",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        },
+        {
+          "id": "caption",
+          "type": "text",
+          "role": "caption",
+          "x": 0.1,
+          "y": 0.58,
+          "width": 0.8,
+          "height": 0.14,
+          "opacity": 0.92,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "regular",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        }
+      ],
+      "motion": [
+        {
+          "type": "fade",
+          "durationMs": 350,
+          "delayMs": 0
+        },
+        {
+          "type": "slide-up",
+          "durationMs": 500,
+          "delayMs": 100
+        }
+      ],
+      "accessibility": {
+        "minimumContrastNote": "Use high-contrast foreground/background tokens and test Bengali glyph rendering.",
+        "bengaliTextSafe": true,
+        "reducedMotionSupported": true
+      }
+    },
+    {
+      "id": "paper-cut",
+      "name": "Paper Cut",
+      "origin": "proposed-original",
+      "category": [
+        "story",
+        "text"
+      ],
+      "description": "Layered cut-paper shapes with title and caption.",
+      "aspectRatios": [
+        "9:16",
+        "1:1",
+        "4:5",
+        "16:9"
+      ],
+      "layers": [
+        {
+          "id": "background",
+          "type": "shape",
+          "role": "background",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1,
+          "opacity": 1.0,
+          "textStyle": {
+            "fillToken": "surface-background"
+          }
+        },
+        {
+          "id": "headline",
+          "type": "text",
+          "role": "headline",
+          "x": 0.08,
+          "y": 0.3,
+          "width": 0.84,
+          "height": 0.22,
+          "opacity": 1.0,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "bold",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        },
+        {
+          "id": "caption",
+          "type": "text",
+          "role": "caption",
+          "x": 0.1,
+          "y": 0.58,
+          "width": 0.8,
+          "height": 0.14,
+          "opacity": 0.92,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "regular",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        }
+      ],
+      "motion": [
+        {
+          "type": "fade",
+          "durationMs": 350,
+          "delayMs": 0
+        },
+        {
+          "type": "slide-up",
+          "durationMs": 500,
+          "delayMs": 100
+        }
+      ],
+      "accessibility": {
+        "minimumContrastNote": "Use high-contrast foreground/background tokens and test Bengali glyph rendering.",
+        "bengaliTextSafe": true,
+        "reducedMotionSupported": true
+      }
+    },
+    {
+      "id": "comic-pop",
+      "name": "Comic Pop",
+      "origin": "proposed-original",
+      "category": [
+        "text",
+        "story"
+      ],
+      "description": "Comic panels, speech bubbles and halftone accents.",
+      "aspectRatios": [
+        "9:16",
+        "1:1",
+        "4:5",
+        "16:9"
+      ],
+      "layers": [
+        {
+          "id": "background",
+          "type": "shape",
+          "role": "background",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1,
+          "opacity": 1.0,
+          "textStyle": {
+            "fillToken": "surface-background"
+          }
+        },
+        {
+          "id": "headline",
+          "type": "text",
+          "role": "headline",
+          "x": 0.08,
+          "y": 0.3,
+          "width": 0.84,
+          "height": 0.22,
+          "opacity": 1.0,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "bold",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        },
+        {
+          "id": "caption",
+          "type": "text",
+          "role": "caption",
+          "x": 0.1,
+          "y": 0.58,
+          "width": 0.8,
+          "height": 0.14,
+          "opacity": 0.92,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "regular",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        }
+      ],
+      "motion": [
+        {
+          "type": "fade",
+          "durationMs": 350,
+          "delayMs": 0
+        },
+        {
+          "type": "slide-up",
+          "durationMs": 500,
+          "delayMs": 100
+        }
+      ],
+      "accessibility": {
+        "minimumContrastNote": "Use high-contrast foreground/background tokens and test Bengali glyph rendering.",
+        "bengaliTextSafe": true,
+        "reducedMotionSupported": true
+      }
+    },
+    {
+      "id": "kinetic-type",
+      "name": "Kinetic Type",
+      "origin": "proposed-original",
+      "category": [
+        "text",
+        "education"
+      ],
+      "description": "Word-by-word typographic emphasis.",
+      "aspectRatios": [
+        "9:16",
+        "1:1",
+        "4:5",
+        "16:9"
+      ],
+      "layers": [
+        {
+          "id": "background",
+          "type": "shape",
+          "role": "background",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1,
+          "opacity": 1.0,
+          "textStyle": {
+            "fillToken": "surface-background"
+          }
+        },
+        {
+          "id": "headline",
+          "type": "text",
+          "role": "headline",
+          "x": 0.08,
+          "y": 0.3,
+          "width": 0.84,
+          "height": 0.22,
+          "opacity": 1.0,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "bold",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        },
+        {
+          "id": "caption",
+          "type": "text",
+          "role": "caption",
+          "x": 0.1,
+          "y": 0.58,
+          "width": 0.8,
+          "height": 0.14,
+          "opacity": 0.92,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "regular",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        }
+      ],
+      "motion": [
+        {
+          "type": "fade",
+          "durationMs": 350,
+          "delayMs": 0
+        },
+        {
+          "type": "slide-up",
+          "durationMs": 500,
+          "delayMs": 100
+        }
+      ],
+      "accessibility": {
+        "minimumContrastNote": "Use high-contrast foreground/background tokens and test Bengali glyph rendering.",
+        "bengaliTextSafe": true,
+        "reducedMotionSupported": true
+      }
+    },
+    {
+      "id": "retro-terminal",
+      "name": "Retro Terminal",
+      "origin": "proposed-original",
+      "category": [
+        "brand",
+        "text"
+      ],
+      "description": "Terminal-inspired panel with cursor reveal.",
+      "aspectRatios": [
+        "9:16",
+        "1:1",
+        "4:5",
+        "16:9"
+      ],
+      "layers": [
+        {
+          "id": "background",
+          "type": "shape",
+          "role": "background",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1,
+          "opacity": 1.0,
+          "textStyle": {
+            "fillToken": "surface-background"
+          }
+        },
+        {
+          "id": "headline",
+          "type": "text",
+          "role": "headline",
+          "x": 0.08,
+          "y": 0.3,
+          "width": 0.84,
+          "height": 0.22,
+          "opacity": 1.0,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "bold",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        },
+        {
+          "id": "caption",
+          "type": "text",
+          "role": "caption",
+          "x": 0.1,
+          "y": 0.58,
+          "width": 0.8,
+          "height": 0.14,
+          "opacity": 0.92,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "regular",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        }
+      ],
+      "motion": [
+        {
+          "type": "fade",
+          "durationMs": 350,
+          "delayMs": 0
+        },
+        {
+          "type": "slide-up",
+          "durationMs": 500,
+          "delayMs": 100
+        }
+      ],
+      "accessibility": {
+        "minimumContrastNote": "Use high-contrast foreground/background tokens and test Bengali glyph rendering.",
+        "bengaliTextSafe": true,
+        "reducedMotionSupported": true
+      }
+    },
+    {
+      "id": "soft-gradient",
+      "name": "Soft Gradient",
+      "origin": "proposed-original",
+      "category": [
+        "brand",
+        "text"
+      ],
+      "description": "Soft gradient background and rounded text cards.",
+      "aspectRatios": [
+        "9:16",
+        "1:1",
+        "4:5",
+        "16:9"
+      ],
+      "layers": [
+        {
+          "id": "background",
+          "type": "shape",
+          "role": "background",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1,
+          "opacity": 1.0,
+          "textStyle": {
+            "fillToken": "surface-background"
+          }
+        },
+        {
+          "id": "headline",
+          "type": "text",
+          "role": "headline",
+          "x": 0.08,
+          "y": 0.3,
+          "width": 0.84,
+          "height": 0.22,
+          "opacity": 1.0,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "bold",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        },
+        {
+          "id": "caption",
+          "type": "text",
+          "role": "caption",
+          "x": 0.1,
+          "y": 0.58,
+          "width": 0.8,
+          "height": 0.14,
+          "opacity": 0.92,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "regular",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        }
+      ],
+      "motion": [
+        {
+          "type": "fade",
+          "durationMs": 350,
+          "delayMs": 0
+        },
+        {
+          "type": "slide-up",
+          "durationMs": 500,
+          "delayMs": 100
+        }
+      ],
+      "accessibility": {
+        "minimumContrastNote": "Use high-contrast foreground/background tokens and test Bengali glyph rendering.",
+        "bengaliTextSafe": true,
+        "reducedMotionSupported": true
+      }
+    },
+    {
+      "id": "blueprint",
+      "name": "Blueprint",
+      "origin": "proposed-original",
+      "category": [
+        "education",
+        "product"
+      ],
+      "description": "Technical grid with callout labels and line accents.",
+      "aspectRatios": [
+        "9:16",
+        "1:1",
+        "4:5",
+        "16:9"
+      ],
+      "layers": [
+        {
+          "id": "background",
+          "type": "shape",
+          "role": "background",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1,
+          "opacity": 1.0,
+          "textStyle": {
+            "fillToken": "surface-background"
+          }
+        },
+        {
+          "id": "headline",
+          "type": "text",
+          "role": "headline",
+          "x": 0.08,
+          "y": 0.3,
+          "width": 0.84,
+          "height": 0.22,
+          "opacity": 1.0,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "bold",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        },
+        {
+          "id": "caption",
+          "type": "text",
+          "role": "caption",
+          "x": 0.1,
+          "y": 0.58,
+          "width": 0.8,
+          "height": 0.14,
+          "opacity": 0.92,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "regular",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        }
+      ],
+      "motion": [
+        {
+          "type": "fade",
+          "durationMs": 350,
+          "delayMs": 0
+        },
+        {
+          "type": "slide-up",
+          "durationMs": 500,
+          "delayMs": 100
+        }
+      ],
+      "accessibility": {
+        "minimumContrastNote": "Use high-contrast foreground/background tokens and test Bengali glyph rendering.",
+        "bengaliTextSafe": true,
+        "reducedMotionSupported": true
+      }
+    },
+    {
+      "id": "magazine-editorial",
+      "name": "Magazine Editorial",
+      "origin": "proposed-original",
+      "category": [
+        "editorial",
+        "brand"
+      ],
+      "description": "Editorial grid with image and strong typography.",
+      "aspectRatios": [
+        "9:16",
+        "1:1",
+        "4:5",
+        "16:9"
+      ],
+      "layers": [
+        {
+          "id": "background",
+          "type": "shape",
+          "role": "background",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1,
+          "opacity": 1.0,
+          "textStyle": {
+            "fillToken": "surface-background"
+          }
+        },
+        {
+          "id": "headline",
+          "type": "text",
+          "role": "headline",
+          "x": 0.08,
+          "y": 0.3,
+          "width": 0.84,
+          "height": 0.22,
+          "opacity": 1.0,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "bold",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        },
+        {
+          "id": "caption",
+          "type": "text",
+          "role": "caption",
+          "x": 0.1,
+          "y": 0.58,
+          "width": 0.8,
+          "height": 0.14,
+          "opacity": 0.92,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "regular",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        }
+      ],
+      "motion": [
+        {
+          "type": "fade",
+          "durationMs": 350,
+          "delayMs": 0
+        },
+        {
+          "type": "slide-up",
+          "durationMs": 500,
+          "delayMs": 100
+        }
+      ],
+      "accessibility": {
+        "minimumContrastNote": "Use high-contrast foreground/background tokens and test Bengali glyph rendering.",
+        "bengaliTextSafe": true,
+        "reducedMotionSupported": true
+      }
+    },
+    {
+      "id": "3d-object-stage",
+      "name": "3D Object Stage",
+      "origin": "proposed-original",
+      "category": [
+        "3d",
+        "product"
+      ],
+      "description": "2.5D layered object stage; true 3D requires a real renderer.",
+      "aspectRatios": [
+        "9:16",
+        "1:1",
+        "4:5",
+        "16:9"
+      ],
+      "layers": [
+        {
+          "id": "background",
+          "type": "shape",
+          "role": "background",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1,
+          "opacity": 1.0,
+          "textStyle": {
+            "fillToken": "surface-background"
+          }
+        },
+        {
+          "id": "headline",
+          "type": "text",
+          "role": "headline",
+          "x": 0.08,
+          "y": 0.3,
+          "width": 0.84,
+          "height": 0.22,
+          "opacity": 1.0,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "bold",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        },
+        {
+          "id": "caption",
+          "type": "text",
+          "role": "caption",
+          "x": 0.1,
+          "y": 0.58,
+          "width": 0.8,
+          "height": 0.14,
+          "opacity": 0.92,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "regular",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        }
+      ],
+      "motion": [
+        {
+          "type": "fade",
+          "durationMs": 350,
+          "delayMs": 0
+        },
+        {
+          "type": "slide-up",
+          "durationMs": 500,
+          "delayMs": 100
+        }
+      ],
+      "accessibility": {
+        "minimumContrastNote": "Use high-contrast foreground/background tokens and test Bengali glyph rendering.",
+        "bengaliTextSafe": true,
+        "reducedMotionSupported": true
+      }
+    },
+    {
+      "id": "split-screen",
+      "name": "Split Screen",
+      "origin": "proposed-original",
+      "category": [
+        "education",
+        "editorial"
+      ],
+      "description": "Two-panel comparison layout.",
+      "aspectRatios": [
+        "9:16",
+        "1:1",
+        "4:5",
+        "16:9"
+      ],
+      "layers": [
+        {
+          "id": "background",
+          "type": "shape",
+          "role": "background",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1,
+          "opacity": 1.0,
+          "textStyle": {
+            "fillToken": "surface-background"
+          }
+        },
+        {
+          "id": "headline",
+          "type": "text",
+          "role": "headline",
+          "x": 0.08,
+          "y": 0.3,
+          "width": 0.84,
+          "height": 0.22,
+          "opacity": 1.0,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "bold",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        },
+        {
+          "id": "caption",
+          "type": "text",
+          "role": "caption",
+          "x": 0.1,
+          "y": 0.58,
+          "width": 0.8,
+          "height": 0.14,
+          "opacity": 0.92,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "regular",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        }
+      ],
+      "motion": [
+        {
+          "type": "fade",
+          "durationMs": 350,
+          "delayMs": 0
+        },
+        {
+          "type": "slide-up",
+          "durationMs": 500,
+          "delayMs": 100
+        }
+      ],
+      "accessibility": {
+        "minimumContrastNote": "Use high-contrast foreground/background tokens and test Bengali glyph rendering.",
+        "bengaliTextSafe": true,
+        "reducedMotionSupported": true
+      }
+    },
+    {
+      "id": "chalkboard",
+      "name": "Chalkboard",
+      "origin": "proposed-original",
+      "category": [
+        "education",
+        "story"
+      ],
+      "description": "Chalkboard-inspired background and drawn-line accents.",
+      "aspectRatios": [
+        "9:16",
+        "1:1",
+        "4:5",
+        "16:9"
+      ],
+      "layers": [
+        {
+          "id": "background",
+          "type": "shape",
+          "role": "background",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1,
+          "opacity": 1.0,
+          "textStyle": {
+            "fillToken": "surface-background"
+          }
+        },
+        {
+          "id": "headline",
+          "type": "text",
+          "role": "headline",
+          "x": 0.08,
+          "y": 0.3,
+          "width": 0.84,
+          "height": 0.22,
+          "opacity": 1.0,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "bold",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        },
+        {
+          "id": "caption",
+          "type": "text",
+          "role": "caption",
+          "x": 0.1,
+          "y": 0.58,
+          "width": 0.8,
+          "height": 0.14,
+          "opacity": 0.92,
+          "textStyle": {
+            "fontFamily": "Noto Sans Bengali",
+            "fontWeight": "regular",
+            "maxLines": 3,
+            "alignment": "center"
+          }
+        }
+      ],
+      "motion": [
+        {
+          "type": "fade",
+          "durationMs": 350,
+          "delayMs": 0
+        },
+        {
+          "type": "slide-up",
+          "durationMs": 500,
+          "delayMs": 100
+        }
+      ],
+      "accessibility": {
+        "minimumContrastNote": "Use high-contrast foreground/background tokens and test Bengali glyph rendering.",
+        "bengaliTextSafe": true,
+        "reducedMotionSupported": true
+      }
+    }
+  ]
+}

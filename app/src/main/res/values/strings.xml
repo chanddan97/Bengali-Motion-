@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">BanglaMotion</string>
+    <string name="app_full_title">BanglaMotion Mobile Studio</string>
+    <string name="cd_app_logo">BanglaMotion studio emblem</string>
+    <string name="cd_create_project">Create new project</string>
+    <string name="cd_search_projects">Search projects</string>
+    <string name="cd_clear_search">Clear search</string>
+    <string name="cd_project_actions">Project options</string>
+    <string name="cd_navigate_back">Navigate back</string>
+    <string name="cd_language_switcher">Switch interface language</string>
+</resources>
